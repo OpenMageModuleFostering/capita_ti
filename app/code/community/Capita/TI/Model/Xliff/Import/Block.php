@@ -128,7 +128,7 @@ class Capita_TI_Model_Xliff_Import_Block extends Capita_TI_Model_Xliff_Import_Ab
                 if ($inStores) {
                     // block covers at least one target
                     $block->setTitle(@$destData['title'])
-                        ->setContent(@$destData['content']);
+                        ->setContent($this->_partialHtmlEncode(@$destData['content']));
                     $transaction->addObject($block);
                 }
 

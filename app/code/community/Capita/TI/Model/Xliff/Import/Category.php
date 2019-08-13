@@ -89,6 +89,18 @@ class Capita_TI_Model_Xliff_Import_Category extends Capita_TI_Model_Xliff_Import
             }
         }
 
+        /* @var $eavConfig Mage_Eav_Model_Config */
+        $eavConfig = Mage::getSingleton('eav/config');
+        // Since WYSIWYG fields are typically not escaped on the frontend
+        // let's take a precaution and do some encoding of our own
+        foreach ($destData as $code => &$value) {
+            /* @var $attribute Mage_Catalog_Model_Entity_Attribute */
+            $attribute = $eavConfig->getAttribute(Mage_Catalog_Model_Category::ENTITY, $code);
+            if ($attribute && $attribute->getIsWysiwygEnabled()) {
+                $value = $this->_partialHtmlEncode($value);
+            }
+        }
+
         /* @var $store Mage_Core_Model_Store */
         foreach (Mage::app()->getStores() as $store) {
             $code = (string) $store->getConfig('general/locale/code');

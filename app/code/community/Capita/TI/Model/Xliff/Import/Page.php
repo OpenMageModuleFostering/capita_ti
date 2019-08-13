@@ -145,7 +145,7 @@ class Capita_TI_Model_Xliff_Import_Page extends Capita_TI_Model_Xliff_Import_Abs
                     ->unsetData('creation_time')
                     ->unsetData('update_time')
                     ->setTitle(@$destData['title'])
-                    ->setContent(@$destData['content'])
+                    ->setContent($this->_partialHtmlEncode(@$destData['content']))
                     ->setContentHeading(@$destData['content_heading'])
                     ->setMetaDescription(@$destData['meta_description'])
                     ->setMetaKeywords(@$destData['meta_keywords'])

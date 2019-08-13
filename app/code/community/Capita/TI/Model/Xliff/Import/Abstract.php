@@ -111,4 +111,20 @@ abstract class Capita_TI_Model_Xliff_Import_Abstract
         $this->_request = $request;
         return $this;
     }
+
+    /**
+     * Only encodes printable characters, HTML elements remain
+     * 
+     * @param string $text
+     * @return string
+     */
+    protected function _partialHtmlEncode($text)
+    {
+        // htmlentities() double encodes the text
+        // (deliberately encoded HTML probably has &lt; which becomes &amp;lt;)
+        // then htmlspecialchars_decode() reverts only the valid HTML
+        // (&amp; becomes & and the &lt; is back to how it was)
+        // unicode chars are now named entities instead
+        return htmlspecialchars_decode(htmlentities($text));
+    }
 }
