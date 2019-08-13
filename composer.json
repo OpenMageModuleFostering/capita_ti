@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/Capita_TI",
+    "type": "magento-module",
+    "license": "",
+    "homepage": "",
+    "description": "Translate catalog and CMS to several languages.",
+    "authors": [
+    {
+        "name": "Daniel Deady",
+        "email": "daniel@clockworkgeek.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}

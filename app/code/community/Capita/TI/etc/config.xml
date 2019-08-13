@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- 
+SmartMATE Magento Connect Terms of Use
+
+1. Agreement to these Terms of use
+These Terms govern your use of the SmartMATE Magento Connect. These Terms do 
+not relate to any other Capita Translation and Interpreting Limited 
+(“Capita”) website or service or your use of any other Capita website or 
+service and these Terms do not govern your use of the language services you may 
+wish to receive from Capita.
+By accessing or using the SmartMATE Magento Connect you agree with and consent 
+to these Terms and you represent that you have the legal authority to accept 
+the Terms on behalf of yourself and any party you represent.
+
+2. Intellectual property Rights
+All Intellectual Property Rights (including but not limited to trademarks, 
+copyright (including rights in computer software), trade secrets, trade or 
+business names, domain names and other similar rights or obligations whether 
+registerable or not in any country and applications for any of the foregoing) 
+in the SmartMATE Magento Connect belong to Capita and no permission whatsoever 
+is given to you for the SmartMATE Magento Connect to be (without limitation) 
+sold, distributed or edited. 
+
+3. NO WARRANTY
+THE SMARTMATE MAGENTO CONNECT IS PROVIDED TO YOU ON AN “AS-IS” BASIS, 
+WITHOUT REPRESENTATIONS, WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS 
+OR IMPLIED INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES, REPRESENTATIONS OR 
+CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A 
+PARTICULAR PURPOSE.
+CAPITA DOES NOT WARRANT THAT THE FUNCTIONS OR CONTENT CONTAINED ON THE 
+SMARTMATE MAGENTO CONNECT WILL BE ERROR-FREE, THAT DEFECTS WILL BE CORRECTED, 
+OR THAT CAPITA OR ITS THIRD PARTIES SERVERS ARE FREE OF VIRUSES OR OTHER 
+HARMFUL COMPONENTS. CAPITA DOES NOT WARRANT OR MAKE ANY REPRESENTATION 
+REGARDING USE OF THE SMARTMATE MAGENTO CONNECT IN TERMS OF ACCURACY, 
+RELIABILITY, OR OTHERWISE.
+You are solely responsible for determining the appropriateness of using the 
+SmartMATE Magento Connect and you assume all risks associated with this, 
+including but not limited compliance with applicable laws, damage to or loss of 
+data, programs or equipment, and unavailability or interruption of operations.
+YOUR USE OF THE SMARTMATE MAGENTO CONNECT IS SOLEY AT YOUR RISK.
+
+4. LIMITATION OF LIABILITY
+IN NO EVENT SHALL CAPITA BE LIABLE TO YOU FOR ANY INCIDENTAL, DIRECT, INDIRECT, 
+PUNITIVE, ACTUAL, CONSEQUENTIAL, SPECIAL, EXEMPLARY OR OTHER DAMAGES, INCLUDING 
+WITHOUT LIMITATION, LOSS OF REVENUE OR INCOME, LOST PROFITS, OR SIMILAR DAMAGES 
+SUFFERED OR INCURRED BY YOU OR ANY THIRD PARTY HOWEVER CAUSED AND ON ANY THEORY 
+OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 
+NEGLIGENCE OR OTHERWISE) OR OTHERWISE THAT ARISE IN CONNECTION WITH YOUR USE OF 
+THE SMARTMATE MAGENTO CONNECT (OR THE TERMINATION THEREOF FOR ANY REASON), EVEN 
+IF CAPITA HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+5. Indemnification for breach of the Terms
+You agree to indemnify and hold harmless Capita from and against any and all 
+loss, expenses, damages, and costs, including without limitation reasonable 
+attorney fees, resulting, whether directly or indirectly, from your violation 
+of the Terms.
+
+6. General
+These Terms are governed by and shall be construed in accordance with English 
+law and the parties submit to the exclusive jurisdiction of the English courts.
+If any provision of these Terms is invalid or unenforceable under applicable 
+law, it shall not affect the validity or enforceability of the remainder of the 
+terms of these Terms and such provision shall be reformed to the minimum extent 
+necessary to make such provision valid and enforceable.
+ -->
+ <config>
+    <modules>
+        <Capita_TI>
+            <version>1.0.0</version>
+        </Capita_TI>
+    </modules>
+
+    <global>
+        <blocks>
+            <capita_ti>
+                <class>Capita_TI_Block</class>
+            </capita_ti>
+        </blocks>
+        <helpers>
+            <capita_ti>
+                <class>Capita_TI_Helper</class>
+            </capita_ti>
+        </helpers>
+        <models>
+            <capita_ti>
+                <class>Capita_TI_Model</class>
+                <resourceModel>capita_ti_resource</resourceModel>
+            </capita_ti>
+            <capita_ti_resource>
+                <class>Capita_TI_Model_Resource</class>
+                <entities>
+                    <request>
+                        <table>capita_ti_request</table>
+                    </request>
+                    <document>
+                        <table>capita_ti_document</table>
+                    </document>
+                    <block>
+                        <table>capita_ti_block</table>
+                    </block>
+                    <category>
+                        <table>capita_ti_category</table>
+                    </category>
+                    <page>
+                        <table>capita_ti_page</table>
+                    </page>
+                    <product>
+                        <table>capita_ti_product</table>
+                    </product>
+                    <attribute>
+                        <table>capita_ti_attribute</table>
+                    </attribute>
+                    <attribute_diff>
+                        <table>capita_ti_attribute_diff</table>
+                    </attribute_diff>
+                    <block_diff>
+                        <table>capita_ti_block_diff</table>
+                    </block_diff>
+                    <category_diff>
+                        <table>capita_ti_category_diff</table>
+                    </category_diff>
+                    <page_diff>
+                        <table>capita_ti_page_diff</table>
+                    </page_diff>
+                    <product_diff>
+                        <table>capita_ti_product_diff</table>
+                    </product_diff>
+                </entities>
+            </capita_ti_resource>
+        </models>
+        <resources>
+            <capita_ti_setup>
+                <setup>
+                    <module>Capita_TI</module>
+                </setup>
+            </capita_ti_setup>
+        </resources>
+    </global>
+
+    <admin>
+        <routers>
+            <adminhtml>
+                <args>
+                    <modules>
+                        <capita_ti before="Mage_Adminhtml">Capita_TI_Adminhtml</capita_ti>
+                    </modules>
+                </args>
+            </adminhtml>
+        </routers>
+    </admin>
+
+    <adminhtml>
+        <events>
+            <!-- Add 'translate' action to 'manage products' page -->
+            <adminhtml_catalog_product_grid_prepare_massaction>
+                <observers>
+                    <capita_ti_translate_action>
+                        <class>capita_ti/observer</class>
+                        <method>addMassActionToBlock</method>
+                    </capita_ti_translate_action>
+                </observers>
+            </adminhtml_catalog_product_grid_prepare_massaction>
+
+            <!-- Check if entity is being processed remotely -->
+            <controller_action_layout_render_before_adminhtml_catalog_product_edit>
+                <observers>
+                    <capita_ti_warn>
+                        <class>capita_ti/observer</class>
+                        <method>warnProductInProgress</method>
+                    </capita_ti_warn>
+                </observers>
+            </controller_action_layout_render_before_adminhtml_catalog_product_edit>
+            <controller_action_layout_render_before_adminhtml_catalog_product_action_attribute_edit>
+                <observers>
+                    <capita_ti_warn>
+                        <class>capita_ti/observer</class>
+                        <method>warnProductsInProgress</method>
+                    </capita_ti_warn>
+                </observers>
+            </controller_action_layout_render_before_adminhtml_catalog_product_action_attribute_edit>
+            <adminhtml_catalog_category_tabs>
+                <observers>
+                    <capita_ti_warn>
+                        <class>capita_ti/observer</class>
+                        <method>warnCategoryInProgress</method>
+                    </capita_ti_warn>
+                </observers>
+            </adminhtml_catalog_category_tabs>
+            <category_prepare_ajax_response>
+                <observers>
+                    <capita_ti_unwarn>
+                        <class>capita_ti/observer</class>
+                        <method>unwarnCategoryInProgress</method>
+                    </capita_ti_unwarn>
+                </observers>
+            </category_prepare_ajax_response>
+            <controller_action_layout_render_before_adminhtml_cms_block_edit>
+                <observers>
+                    <capita_ti_warn>
+                        <class>capita_ti/observer</class>
+                        <method>warnBlockInProgress</method>
+                    </capita_ti_warn>
+                </observers>
+            </controller_action_layout_render_before_adminhtml_cms_block_edit>
+            <controller_action_layout_render_before_adminhtml_cms_page_edit>
+                <observers>
+                    <capita_ti_warn>
+                        <class>capita_ti/observer</class>
+                        <method>warnPageInProgress</method>
+                    </capita_ti_warn>
+                </observers>
+            </controller_action_layout_render_before_adminhtml_cms_page_edit>
+
+            <!-- Track content changes -->
+            <model_save_after>
+                <observers>
+                    <capita_ti_track>
+                        <class>capita_ti/tracker</class>
+                        <method>modelSaveAfter</method>
+                    </capita_ti_track>
+                </observers>
+            </model_save_after>
+            <catalog_category_save_after>
+                <observers>
+                    <capita_ti_track>
+                        <class>capita_ti/tracker</class>
+                        <method>categorySaveAfter</method>
+                    </capita_ti_track>
+                </observers>
+            </catalog_category_save_after>
+            <cms_page_save_after>
+                <observers>
+                    <capita_ti_track>
+                        <class>capita_ti/tracker</class>
+                        <method>pageSaveAfter</method>
+                    </capita_ti_track>
+                </observers>
+            </cms_page_save_after>
+            <catalog_product_save_after>
+                <observers>
+                    <capita_ti_track>
+                        <class>capita_ti/tracker</class>
+                        <method>productSaveAfter</method>
+                    </capita_ti_track>
+                </observers>
+            </catalog_product_save_after>
+            <catalog_entity_attribute_save_before>
+                <observers>
+                    <capita_ti_track>
+                        <class>capita_ti/tracker</class>
+                        <method>attributeSaveAfter</method>
+                    </capita_ti_track>
+                </observers>
+            </catalog_entity_attribute_save_before>
+        </events>
+        <layout>
+            <updates>
+                <capita_ti>
+                    <file>capita_ti.xml</file>
+                </capita_ti>
+            </updates>
+        </layout>
+        <translate>
+            <modules>
+                <Capita_TI>
+                    <files>
+                        <default>Capita_TI.csv</default>
+                    </files>
+                </Capita_TI>
+            </modules>
+        </translate>
+    </adminhtml>
+
+    <phpunit>
+        <suite>
+            <modules>
+                <Capita_TI />
+            </modules>
+        </suite>
+    </phpunit>
+
+    <default>
+        <crontab>
+            <jobs>
+                <capita_ti_refresh>
+                    <run>
+                        <model>capita_ti/observer::cronRefresh</model>
+                    </run>
+                </capita_ti_refresh>
+                <capita_ti_import>
+                    <run>
+                        <model>capita_ti/observer::cronImport</model>
+                    </run>
+                </capita_ti_import>
+                <capita_ti_purge>
+                    <run>
+                        <model>capita_ti/observer::cronPurge</model>
+                    </run>
+                </capita_ti_purge>
+            </jobs>
+        </crontab>
+
+        <capita_ti>
+            <base_url><![CDATA[https://api.capitatranslationinterpreting.com/api/v1.0]]></base_url>
+            <first_use_email>jake.mason@5ms.uk.com,tom.shaw2@capita.co.uk,presales@capita-ti.com</first_use_email>
+
+            <scheduling>
+                <refresh>hourly</refresh>
+                <import>always</import>
+                <export>never</export>
+                <purge>never</purge>
+            </scheduling>
+            <products>
+                <attributes>description,image_label,meta_description,meta_keyword,meta_title,name,short_description,small_image_label,thumbnail_label</attributes>
+            </products>
+            <categories>
+                <attributes>description,meta_description,meta_keywords,meta_title,name</attributes>
+            </categories>
+        </capita_ti>
+    </default>
+</config>
