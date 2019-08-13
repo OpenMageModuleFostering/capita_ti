@@ -66,7 +66,7 @@ necessary to make such provision valid and enforceable.
  <config>
     <modules>
         <Capita_TI>
-            <version>1.0.0</version>
+            <version>1.0.2</version>
         </Capita_TI>
     </modules>
 
@@ -301,9 +301,11 @@ necessary to make such provision valid and enforceable.
         </crontab>
 
         <capita_ti>
-            <base_url><![CDATA[https://api.capitatranslationinterpreting.com/api/v1.0]]></base_url>
             <first_use_email>jake.mason@5ms.uk.com,tom.shaw2@capita.co.uk,presales@capita-ti.com</first_use_email>
 
+            <authentication>
+                <base_url><![CDATA[https://api.capitatranslationinterpreting.com/api/v1.0]]></base_url>
+            </authentication>
             <scheduling>
                 <refresh>hourly</refresh>
                 <import>always</import>

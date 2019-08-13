@@ -84,7 +84,7 @@ class Capita_TI_Model_Api_Abstract extends Zend_Http_Client
 
     protected function getEndpoint($path)
     {
-        $baseUrl = Mage::getStoreConfig('capita_ti/base_url');
+        $baseUrl = Mage::getStoreConfig('capita_ti/authentication/base_url');
         return rtrim($baseUrl, DS) . DS . ltrim($path, DS);
     }
 

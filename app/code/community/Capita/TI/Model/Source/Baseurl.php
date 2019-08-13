@@ -67,33 +67,40 @@
  * @copyright Copyright (c) 2017 5M Solutions Ltd. (http://www.5ms.co.uk/)
  */
 
-class Capita_TI_Model_Email extends Mage_Core_Model_Email
+class Capita_TI_Model_Source_Baseurl
 {
 
-    /**
-     * Attempt to send a notice to multiple recipients
-     * 
-     * This is necessary for licensing reasons.
-     * The recipients have an existing agreement based on the number of active users.
-     * 
-     * @return Capita_TI_Model_Email
-     * @throws Zend_Mail_Exception
-     */
-    public function sendFirstUse()
+    public function getOptions()
     {
-        if (Mage::getStoreConfigFlag('capita_ti/first_use_email')) {
-            $addresses = explode(',', Mage::getStoreConfig('capita_ti/first_use_email'));
-            $username = Mage::getStoreConfig('capita_ti/authentication/username');
-            $this->setFromEmail(Mage::getStoreConfig('trans_email/ident_general/email'))
-                ->setFromName(Mage::getStoreConfig('trans_email/ident_general/name'))
-                ->setToEmail(array_combine($addresses, $addresses))
-                ->setSubject('New request by '.$username)
-                ->setBody('New request by '.$username);
-            // exception might occur here
-            $this->send();
-            // prevent another ever being sent from this install
-            Mage::getConfig()->saveConfig('capita_ti/first_use_email', '');
+        /* @var $helper Capita_TI_Helper_Data */
+        $helper = Mage::helper('capita_ti');
+        return array(
+            'https://api.capitatranslationinterpreting.com/api/v1.0' => $helper->__('Production'),
+            'https://api.capitatranslationinterpreting.com/staging/api/v1.0' => $helper->__('Staging')
+        );
+    }
+
+    public function toOptionArray()
+    {
+        /* @var $helper Capita_TI_Helper_Data */
+        $helper = Mage::helper('capita_ti');
+        return array(
+            array('value' => 'https://api.capitatranslationinterpreting.com/api/v1.0', 'label' => $helper->__('Production')),
+            array('value' => 'https://api.capitatranslationinterpreting.com/staging/api/v1.0', 'label' => $helper->__('Staging'))
+        );
+    }
+
+    public function getOptionLabel($value)
+    {
+        /* @var $helper Capita_TI_Helper_Data */
+        $helper = Mage::helper('capita_ti');
+        switch ($value) {
+            case 'https://api.capitatranslationinterpreting.com/api/v1.0':
+                return $helper->__('Production');
+            case 'https://api.capitatranslationinterpreting.com/staging/api/v1.0':
+                return $helper->__('Staging');
+            default:
+                return '';
         }
-        return $this;
     }
 }

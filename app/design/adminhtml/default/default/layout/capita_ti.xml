@@ -72,9 +72,6 @@ necessary to make such provision valid and enforceable.
     </adminhtml_capita_request_index>
 
     <adminhtml_capita_request_new>
-        <reference name="head">
-            <action method="setCanLoadExtJs"><flag>1</flag></action>
-        </reference>
         <reference name="left">
             <block type="capita_ti/adminhtml_request_new_tabs" name="capita_ti_new_request_tabs">
                 <!-- these methods create ajax sections -->
